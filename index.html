@@ -114,28 +114,33 @@
 
 
 /* 🔥 THE FLIGHT & BURN KEYFRAMES */
-@keyframes flyAndBurn {
+@keyframes flyAndBurnFromCenter {
     0% {
-        /* Start at the bottom, normal size, glowing warm orange */
-        transform: translateY(0) translateX(0) scale(1);
-        box-shadow: 0 0 40px #ffaa44, 0 0 80px #ff5500;
+        /* Starts big right in the center */
+        transform: translate(-50%, -50%) scale(1);
+        box-shadow: 0 0 50px #ffaa44, 0 0 100px #ff5500;
         opacity: 1;
     }
-    40% {
-        /* Gently floating up into the sky, drifting slightly right */
-        transform: translateY(-50vh) translateX(20px) scale(0.7);
+    25% {
+        /* Stays centered briefly so you can admire your wish */
+        transform: translate(-50%, -50%) scale(1.05);
         opacity: 1;
     }
-    75% {
-        /* 🔥 BURNING EFFECT: Turns intense fiery crimson, shrinks rapidly */
+    60% {
+        /* Begins lifting up and shrinking slightly */
+        transform: translate(-50%, -100vh) scale(0.6);
+        opacity: 1;
+    }
+    85% {
+        /* 🔥 BURNING EFFECT: Turns hot crimson and shrinks down fast */
         background: linear-gradient(to top, #ff1100, #ff5500, #ffaa44);
-        box-shadow: 0 0 70px #ff0000, 0 0 140px #ff3300;
-        transform: translateY(-90vh) translateX(40px) scale(0.3);
+        box-shadow: 0 0 80px #ff0000, 0 0 160px #ff3300;
+        transform: translate(-30%, -150vh) scale(0.2);
         opacity: 0.8;
     }
     100% {
-        /* Disappears into the night sky like an ash particle */
-        transform: translateY(-125vh) translateX(50px) scale(0.0);
+        /* Vanishes completely into the night */
+        transform: translate(0%, -200vh) scale(0.0);
         box-shadow: 0 0 0px transparent;
         opacity: 0;
     }
@@ -143,15 +148,15 @@
 
 
         /* The Corona Kingdom Sun Emblem inside the code */
-        .corona-sun {
-            width: 35px;
-            height: 35px;
-            background: #801000;
-            border-radius: 50%;
-            position: relative;
-            opacity: 0.75;
-            box-shadow: 0 0 8px #ff2200;
-        }
+.corona-sun {
+    width: 70px;
+    height: 70px;
+    background: #801000;
+    border-radius: 50%;
+    position: relative;
+    opacity: 0.75;
+    box-shadow: 0 0 15px #ff2200;
+}
 
         /* Creating simple sun rays using CSS shapes */
         .corona-sun::before, .corona-sun::after {
@@ -166,17 +171,19 @@
             transform: rotate(60deg);
         }
 
-        .lantern-text {
-            color: #550a00;
-            font-size: 11px;
-            font-weight: bold;
-            text-align: center;
-            word-break: break-word;
-            font-style: italic;
-            z-index: 2;
-            max-height: 50px;
-            overflow: hidden;
-        }
+.lantern-text {
+    color: #550a00;
+    /* Bigger font size for readability */
+    font-size: 18px; 
+    font-weight: bold;
+    text-align: center;
+    word-break: break-word;
+    font-style: italic;
+    z-index: 2;
+    max-height: 120px;
+    overflow: hidden;
+    line-height: 1.4;
+}
 
         /* 4. Background Kingdom Lights */
 .bg-lantern {
