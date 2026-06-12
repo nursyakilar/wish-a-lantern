@@ -88,15 +88,14 @@
         /* 3. The Tangled Paper Lantern Design */
 .lantern {
     position: absolute;
-    /* Centers the lantern perfectly in the middle of the screen */
     top: 50%;
     left: 50%;
-    /* Starting point adjustment for smooth centering */
     transform: translate(-50%, -50%) scale(1);
     
-    /* Bigger dimensions */
-    width: 220px;
-    height: 300px;
+    /* Auto-stretches for paragraphs, but stays a nice size for short wishes */
+    width: 260px;
+    min-height: 320px;
+    height: auto; 
     
     background: linear-gradient(to top, #ff5500, #ffaa44, #ffee99);
     border-radius: 25px 25px 12px 12px;
@@ -104,13 +103,15 @@
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
-    padding: 30px 20px;
+    /* Generous spacing so long text doesn't hit the edges */
+    padding: 30px 25px; 
     box-sizing: border-box;
     z-index: 5;
     
-    /* Links to the new centered flight animation below */
-    animation: flyAndBurnFromCenter 7s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+    /* Links to the updated slower animation */
+    animation: flyAndBurnFromCenter 9s cubic-bezier(0.25, 1, 0.5, 1) forwards;
 }
+
 
 
 /* 🔥 THE FLIGHT & BURN KEYFRAMES */
@@ -173,17 +174,19 @@
 
 .lantern-text {
     color: #550a00;
-    /* Bigger font size for readability */
-    font-size: 18px; 
+    font-size: 15px; /* Slightly smaller so more words fit beautifully */
     font-weight: bold;
     text-align: center;
     word-break: break-word;
     font-style: italic;
     z-index: 2;
-    max-height: 120px;
-    overflow: hidden;
-    line-height: 1.4;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    line-height: 1.5;
+    max-height: 180px; /* Prevents it from getting too tall */
+    overflow-y: auto; /* Adds a hidden scroll if it's a massive essay */
 }
+
 
         /* 4. Background Kingdom Lights */
 .bg-lantern {
@@ -246,7 +249,7 @@ function launchLantern() {
         return;
     }
 
-    // Hide the text input box smoothly
+    // Hide the input box smoothly
     document.getElementById('wishBox').style.opacity = '0';
     setTimeout(() => {
         document.getElementById('wishBox').style.display = 'none';
@@ -261,23 +264,29 @@ function launchLantern() {
     sun.className = 'corona-sun';
     lantern.appendChild(sun);
 
-    // Add the user's written wish text
+    // Add the user's paragraph or wish text
     const textSpan = document.createElement('span');
     textSpan.className = 'lantern-text';
     textSpan.innerText = wishText;
     lantern.appendChild(textSpan);
 
-    // Add it to the screen (The CSS animation starts automatically now!)
+    // ⏱️ THE DELAY TRICK: We style the animation to stay paused at first
+    lantern.style.animationPlayState = 'paused';
     document.body.appendChild(lantern);
 
-    // Clean up and bring back the input menu after the animation finishes
+    // Wait 3 seconds in the center before unpausing the flight and burn animation
+    setTimeout(() => {
+        lantern.style.animationPlayState = 'running';
+    }, 3000); 
+
+    // Clean up and reset everything after the combined delay + animation time
     setTimeout(() => {
         lantern.remove();
         const box = document.getElementById('wishBox');
         document.getElementById('wishInput').value = "";
         box.style.display = 'block';
         setTimeout(() => box.style.opacity = '1', 100);
-    }, 6500); // Resets slightly after the 6-second animation ends
+    }, 12500); 
 }
 
 
