@@ -3,22 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>I See The Light - Wish Lantern</title>
+    <title>A Wish Lantern</title>
     <style>
         /* 1. Tangled Night Sky (Deep Purples and Blues) */
         body {
             margin: 0;
             padding: 0;
-            background: linear-gradient(to bottom, #070314, #12092b, #2c164d);
+            /* Soft, magical pastel twilight colors */
+            background: linear-gradient(to bottom, #100a26, #2a1b4e, #5c3a75, #a3709d);
             overflow: hidden;
-            font-family: 'Georgia', serif;
+            /* Magical, classic castle-style font */
+            font-family: 'Cinzel', 'Palatino Linotype', 'Book Antiqua', Palatino, serif;
             color: #fff;
             height: 100vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-        }
+            }
+
 
         /* 2. Magical Floating Menu Box */
         .wish-box {
@@ -83,22 +86,32 @@
         }
 
         /* 3. The Tangled Paper Lantern Design */
-        .lantern {
-            position: absolute;
-            bottom: -160px;
-            width: 90px;
-            height: 130px;
-            background: linear-gradient(to top, #ff7700, #ffbb44, #ffee99);
-            border-radius: 10px 10px 5px 5px;
-            box-shadow: 0 0 40px #ffaa44, 0 0 80px rgba(255, 85, 0, 0.6);
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px 10px;
-            box-sizing: border-box;
-            transition: transform 9s cubic-bezier(0.1, 0.4, 0.4, 1), opacity 9s ease;
-        }
+.lantern {
+    position: absolute;
+    bottom: -160px;
+    width: 90px;
+    height: 130px;
+    background: linear-gradient(to top, #ff5500, #ffaa44, #ffee99);
+    border-radius: 12px 12px 6px 6px;
+    /* Intense flame glow */
+    box-shadow: 0 0 40px #ff9933, 0 0 80px #ff3300;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 10px;
+    box-sizing: border-box;
+    /* Added flickering flame animation */
+    animation: flicker 0.2s infinite alternate;
+    transition: transform 8s cubic-bezier(0.3, 0.1, 0.3, 1), opacity 7.5s ease-in;
+}
+
+/* Creates a realistic hot air heat flicker */
+@keyframes flicker {
+    0% { box-shadow: 0 0 35px #ff9933, 0 0 70px #ff3300; transform: scale(1); }
+    100% { box-shadow: 0 0 45px #ffbb44, 0 0 90px #ff5500; transform: scale(1.02); }
+}
+
 
         /* The Corona Kingdom Sun Emblem inside the code */
         .corona-sun {
@@ -137,39 +150,46 @@
         }
 
         /* 4. Background Kingdom Lights */
-        .bg-lantern {
-            position: absolute;
-            background: radial-gradient(circle, #ffbb44, #ff5500);
-            border-radius: 3px;
-            box-shadow: 0 0 10px #ffaa44;
-            opacity: 0;
-            bottom: -20px;
-            animation: floatUp 12s linear infinite;
-        }
+.bg-lantern {
+    position: absolute;
+    /* Soft glowing amber gradient */
+    background: radial-gradient(circle, #ffdf99, #ff9944, rgba(255,100,0,0));
+    border-radius: 50%;
+    /* Blurs the edges to make them look like distant, large lights */
+    filter: blur(1px);
+    box-shadow: 0 0 20px #ffaa44, 0 0 40px #ff5500;
+    opacity: 0;
+    bottom: -50px;
+    animation: floatUp 14s linear infinite;
+}
 
-        @keyframes floatUp {
-            0% { transform: translateY(0) scale(1); opacity: 0; }
-            10% { opacity: 0.7; }
-            90% { opacity: 0.7; }
-            100% { transform: translateY(-105vh) scale(0.3); opacity: 0; }
-        }
+@keyframes floatUp {
+    0% { transform: translateY(0) scale(0.6); opacity: 0; }
+    10% { opacity: 0.6; }
+    90% { opacity: 0.6; }
+    100% { transform: translateY(-110vh) scale(1.5); opacity: 0; }
+}
+
     </style>
 </head>
 <body>
 
     <!-- Background Decoration Lights Creator -->
     <script>
-        // Create 25 background lanterns automatically for the festival vibe
-        for (let i = 0; i < 25; i++) {
-            let bgLight = document.createElement('div');
-            bgLight.className = 'bg-lantern';
-            bgLight.style.width = Math.random() * 8 + 6 + 'px';
-            bgLight.style.height = Math.random() * 12 + 10 + 'px';
-            bgLight.style.left = Math.random() * 100 + 'vw';
-            bgLight.style.animationDelay = Math.random() * 12 + 's';
-            bgLight.style.animationDuration = Math.random() * 6 + 10 + 's';
-            document.body.appendChild(bgLight);
-        }
+// Creates 20 larger background lights
+for (let i = 0; i < 30; i++) {
+    let bgLight = document.createElement('div');
+    bgLight.className = 'bg-lantern';
+    // Increased width and height sizes
+    let size = Math.random() * 25 + 20; 
+    bgLight.style.width = size + 'px';
+    bgLight.style.height = (size * 1.3) + 'px';
+    bgLight.style.left = Math.random() * 100 + 'vw';
+    bgLight.style.animationDelay = Math.random() * 14 + 's';
+    bgLight.style.animationDuration = Math.random() * 6 + 12 + 's';
+    document.body.appendChild(bgLight);
+}
+
     </script>
 
     <!-- The Tangled Wish Box -->
