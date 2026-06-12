@@ -216,7 +216,7 @@
     <!-- Background Decoration Lights Creator -->
     <script>
 // Creates 30 larger background lights
-for (let i = 0; i < 30; i++) {
+for (let i = 0; i < 40; i++) {
     let bgLight = document.createElement('div');
     bgLight.className = 'bg-lantern';
     // Increased width and height sizes
@@ -277,7 +277,7 @@ function launchLantern() {
     // Wait 3 seconds in the center before unpausing the flight and burn animation
     setTimeout(() => {
         lantern.style.animationPlayState = 'running';
-    }, 3000); 
+    }, 5000); //3000
 
     // Clean up and reset everything after the combined delay + animation time
     setTimeout(() => {
