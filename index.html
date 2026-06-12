@@ -174,7 +174,7 @@
 .bg-lantern {
     position: absolute;
     /* Soft glowing amber gradient */
-    background: radial-gradient(cicrle, #ffdf99, #ff9944, rgba(255,100,0,0)); /*circle */
+    background: radial-gradient(circle, #ffdf99, #ff9944, rgba(255,100,0,0)); /*circle */
     border-radius: 50%;
     /* Blurs the edges to make them look like distant, large lights */
     filter: blur(1px);
@@ -198,7 +198,7 @@
     <!-- Background Decoration Lights Creator -->
     <script>
 // Creates 30 larger background lights
-for (let i = 0; i < 40; i++) {
+for (let i = 0; i < 30; i++) {
     let bgLight = document.createElement('div');
     bgLight.className = 'bg-lantern';
     // Increased width and height sizes
