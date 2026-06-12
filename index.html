@@ -88,22 +88,30 @@
         /* 3. The Tangled Paper Lantern Design */
 .lantern {
     position: absolute;
-    bottom: -160px;
-    left: calc(50% - 45px);
-    width: 90px;
-    height: 130px;
+    /* Centers the lantern perfectly in the middle of the screen */
+    top: 50%;
+    left: 50%;
+    /* Starting point adjustment for smooth centering */
+    transform: translate(-50%, -50%) scale(1);
+    
+    /* Bigger dimensions */
+    width: 220px;
+    height: 300px;
+    
     background: linear-gradient(to top, #ff5500, #ffaa44, #ffee99);
-    border-radius: 12px 12px 6px 6px;
+    border-radius: 25px 25px 12px 12px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
-    padding: 15px 10px;
+    padding: 30px 20px;
     box-sizing: border-box;
+    z-index: 5;
     
-    /* 🚀 This links the lantern to the smooth flight/burn animation below */
-    animation: flyAndBurn 6s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+    /* Links to the new centered flight animation below */
+    animation: flyAndBurnFromCenter 7s cubic-bezier(0.25, 1, 0.5, 1) forwards;
 }
+
 
 /* 🔥 THE FLIGHT & BURN KEYFRAMES */
 @keyframes flyAndBurn {
