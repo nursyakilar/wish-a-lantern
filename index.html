@@ -86,11 +86,11 @@
         }
 
         /* 3. The Tangled Paper Lantern Design */
-.lantern {
-    position: absolute;
-    bottom: -160px;
-    width: 90px;
-    height: 130px;
+    .lantern {
+        position: absolute;
+        bottom: -160px;
+        width: 90px;
+        height: 130px;
     background: linear-gradient(to top, #ff5500, #ffaa44, #ffee99);
     border-radius: 12px 12px 6px 6px;
     /* Intense flame glow */
@@ -202,53 +202,62 @@ for (let i = 0; i < 30; i++) {
     </div>
 
     <script>
-        function launchLantern() {
-            const wishText = document.getElementById('wishInput').value;
-            
-            if (wishText.trim() === "") {
-                alert("Please write your dream down first!");
-                return;
-            }
+  function launchLantern() {
+    const wishText = document.getElementById('wishInput').value;
+    
+    if (wishText.trim() === "") {
+        alert("Please write your dream down first!");
+        return;
+    }
 
-            // Hide the box smoothly
-            document.getElementById('wishBox').style.opacity = '0';
-            setTimeout(() => {
-                document.getElementById('wishBox').style.display = 'none';
-            }, 1500);
+    // Hide the text box smoothly
+    document.getElementById('wishBox').style.opacity = '0';
+    setTimeout(() => {
+        document.getElementById('wishBox').style.display = 'none';
+    }, 1500);
 
-            // Build the grand movie lantern
-            const lantern = document.createElement('div');
-            lantern.className = 'lantern';
-            lantern.style.left = 'calc(50% - 45px)';
+    // Build the lantern
+    const lantern = document.createElement('div');
+    lantern.className = 'lantern';
+    lantern.style.left = 'calc(50% - 45px)';
 
-            // Add the Corona Kingdom Sun Graphic
-            const sun = document.createElement('div');
-            sun.className = 'corona-sun';
-            lantern.appendChild(sun);
+    // Add the Sun Logo
+    const sun = document.createElement('div');
+    sun.className = 'corona-sun';
+    lantern.appendChild(sun);
 
-            // Add the personal text message
-            const textSpan = document.createElement('span');
-            textSpan.className = 'lantern-text';
-            textSpan.innerText = wishText;
-            lantern.appendChild(textSpan);
+    // Add the wish text
+    const textSpan = document.createElement('span');
+    textSpan.className = 'lantern-text';
+    textSpan.innerText = wishText;
+    lantern.appendChild(textSpan);
 
-            document.body.appendChild(lantern);
+    document.body.appendChild(lantern);
 
-            // Launch it slowly and gently into space
-            setTimeout(() => {
-                lantern.style.transform = 'translateY(-125vh) translateX(50px) scale(0.15)';
-                lantern.style.opacity = '0';
-            }, 200);
+    // 🔥 THE NEW BURNING ANIMATION: 
+    // Step 1: Lantern lifts off into the air
+    setTimeout(() => {
+        lantern.style.transform = 'translateY(-60vh) translateX(30px) scale(0.6)';
+    }, 200);
 
-            // Clean up and restart the dream cycle
-            setTimeout(() => {
-                lantern.remove();
-                const box = document.getElementById('wishBox');
-                document.getElementById('wishInput').value = "";
-                box.style.display = 'block';
-                setTimeout(() => box.style.opacity = '1', 100);
-            }, 9200);
-        }
+    // Step 2: Halfway up, it "burns up" by turning red-hot, shrinking, and vanishing
+    setTimeout(() => {
+        lantern.style.background = 'linear-gradient(to top, #ff1100, #ff5500, #ffaa44)';
+        lantern.style.boxShadow = '0 0 60px #ff3300, 0 0 120px #ff0000';
+        lantern.style.transform = 'translateY(-125vh) translateX(60px) scale(0.0)';
+        lantern.style.opacity = '0';
+    }, 4000); // Happens 4 seconds after launch
+
+    // Clean up and reset the typing box
+    setTimeout(() => {
+        lantern.remove();
+        const box = document.getElementById('wishBox');
+        document.getElementById('wishInput').value = "";
+        box.style.display = 'block';
+        setTimeout(() => box.style.opacity = '1', 100);
+    }, 9500);
+}
+
     </script>
 </body>
 </html>
