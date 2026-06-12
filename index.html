@@ -316,19 +316,17 @@ function launchLantern() {
 }
 
         function playBurningSound() {
-    // Check if the browser supports audio
+    // 1. Setup the browser audio system safely
     const AudioContext = window.AudioContext || window.webkitAudioContext;
     if (!AudioContext) return;
-    
     const audioCtx = new AudioContext();
 
-    // 1. Create a low rumble for the flame heat
+    // 2. Low Heat Rumble Sound
     const rumbleOsc = audioCtx.createOscillator();
     const rumbleGain = audioCtx.createGain();
     rumbleOsc.type = 'triangle';
-    rumbleOsc.frequency.setValueAtTime(45, audioCtx.currentTime); // Low bass frequency
+    rumbleOsc.frequency.setValueAtTime(45, audioCtx.currentTime); 
     
-    // Modulate the rumble so it moves like a flickering fire
     const rumbleMod = audioCtx.createOscillator();
     const rumbleModGain = audioCtx.createGain();
     rumbleMod.frequency.setValueAtTime(8, audioCtx.currentTime);
@@ -337,9 +335,8 @@ function launchLantern() {
     rumbleMod.connect(rumbleModGain);
     rumbleModGain.connect(rumbleOsc.frequency);
     
-    rumbleGain.gain.setValueAtTime(0.3, audioCtx.currentTime);
-    // Smoothly fade out the sound over 3 seconds
-    rumbleGain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 3);
+    rumbleGain.gain.setValueAtTime(0.4, audioCtx.currentTime);
+    rumbleGain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 3.5);
     
     rumbleOsc.connect(rumbleGain);
     rumbleGain.connect(audioCtx.destination);
@@ -347,16 +344,14 @@ function launchLantern() {
     rumbleOsc.start();
     rumbleMod.start();
 
-    // 2. Generate sharp, random crackling pops for burning paper
-    const bufferSize = audioCtx.sampleRate * 3; // 3 seconds of sound
+    // 3. Crisp Paper Crackling Pops
+    const bufferSize = audioCtx.sampleRate * 3.5; 
     const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
     const data = buffer.getChannelData(0);
     
     for (let i = 0; i < bufferSize; i++) {
-        // Create sharp audio spikes at random intervals
-        if (Math.random() > 0.9993) {
+        if (Math.random() > 0.9991) { // Random crackle spikes
             data[i] = Math.random() * 2 - 1;
-            // Add a little trailing echo to each pop
             if (i < bufferSize - 1) data[i+1] = data[i] * 0.5;
             if (i < bufferSize - 2) data[i+2] = data[i] * 0.25;
         } else {
@@ -368,22 +363,25 @@ function launchLantern() {
     crackleNode.buffer = buffer;
     
     const crackleGain = audioCtx.createGain();
-    crackleGain.gain.setValueAtTime(0.4, audioCtx.currentTime);
-    crackleGain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 3);
+    crackleGain.gain.setValueAtTime(0.5, audioCtx.currentTime);
+    crackleGain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 3.5);
     
     crackleNode.connect(crackleGain);
     crackleGain.connect(audioCtx.destination);
     
     crackleNode.start();
 
-    // Clean up and turn off the audio nodes after 3 seconds
+    // 4. Automatically turn off sound nodes when done
     setTimeout(() => {
-        rumbleOsc.stop();
-        rumbleMod.stop();
-        crackleNode.stop();
-        audioCtx.close();
-    }, 3500);
+        try {
+            rumbleOsc.stop();
+            rumbleMod.stop();
+            crackleNode.stop();
+            audioCtx.close();
+        } catch(e) {}
+    }, 3800);
 }
+
 
     </script>
 </body>
