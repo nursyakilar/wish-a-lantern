@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>I See The Light - Wish Lantern</title>
+    <style>
+        /* 1. Tangled Night Sky (Deep Purples and Blues) */
+        body {
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(to bottom, #070314, #12092b, #2c164d);
+            overflow: hidden;
+            font-family: 'Georgia', serif;
+            color: #fff;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* 2. Magical Floating Menu Box */
+        .wish-box {
+            background: rgba(44, 22, 77, 0.4);
+            padding: 30px;
+            border-radius: 20px;
+            backdrop-filter: blur(12px);
+            border: 1px solid #ffd700;
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.2);
+            text-align: center;
+            z-index: 10;
+            max-width: 350px;
+            width: 90%;
+            transition: opacity 1.5s ease;
+        }
+
+        h1 {
+            font-size: 26px;
+            margin-bottom: 5px;
+            color: #ffd700;
+            text-shadow: 0 0 8px rgba(255, 215, 0, 0.5);
+        }
+
+        p {
+            font-size: 13px;
+            color: #e0b0ff;
+            margin-top: 0;
+            margin-bottom: 20px;
+            font-style: italic;
+        }
+
+        textarea {
+            width: 90%;
+            height: 80px;
+            background: rgba(15, 5, 30, 0.7);
+            border: 1px solid #b388ff;
+            border-radius: 8px;
+            color: #ffe57f;
+            padding: 10px;
+            font-size: 14px;
+            resize: none;
+            outline: none;
+        }
+
+        button {
+            margin-top: 20px;
+            background: linear-gradient(45deg, #ffaa44, #ffd700);
+            color: #301934;
+            border: none;
+            padding: 12px 30px;
+            font-size: 15px;
+            font-weight: bold;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: 0.3s;
+            box-shadow: 0 4px 15px rgba(255, 170, 68, 0.4);
+        }
+
+        button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px #ffd700;
+        }
+
+        /* 3. The Tangled Paper Lantern Design */
+        .lantern {
+            position: absolute;
+            bottom: -160px;
+            width: 90px;
+            height: 130px;
+            background: linear-gradient(to top, #ff7700, #ffbb44, #ffee99);
+            border-radius: 10px 10px 5px 5px;
+            box-shadow: 0 0 40px #ffaa44, 0 0 80px rgba(255, 85, 0, 0.6);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 10px;
+            box-sizing: border-box;
+            transition: transform 9s cubic-bezier(0.1, 0.4, 0.4, 1), opacity 9s ease;
+        }
+
+        /* The Corona Kingdom Sun Emblem inside the code */
+        .corona-sun {
+            width: 35px;
+            height: 35px;
+            background: #801000;
+            border-radius: 50%;
+            position: relative;
+            opacity: 0.75;
+            box-shadow: 0 0 8px #ff2200;
+        }
+
+        /* Creating simple sun rays using CSS shapes */
+        .corona-sun::before, .corona-sun::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: inherit;
+            border-radius: 30%;
+            transform: rotate(30deg);
+        }
+        .corona-sun::after {
+            transform: rotate(60deg);
+        }
+
+        .lantern-text {
+            color: #550a00;
+            font-size: 11px;
+            font-weight: bold;
+            text-align: center;
+            word-break: break-word;
+            font-style: italic;
+            z-index: 2;
+            max-height: 50px;
+            overflow: hidden;
+        }
+
+        /* 4. Background Kingdom Lights */
+        .bg-lantern {
+            position: absolute;
+            background: radial-gradient(circle, #ffbb44, #ff5500);
+            border-radius: 3px;
+            box-shadow: 0 0 10px #ffaa44;
+            opacity: 0;
+            bottom: -20px;
+            animation: floatUp 12s linear infinite;
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(0) scale(1); opacity: 0; }
+            10% { opacity: 0.7; }
+            90% { opacity: 0.7; }
+            100% { transform: translateY(-105vh) scale(0.3); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Background Decoration Lights Creator -->
+    <script>
+        // Create 25 background lanterns automatically for the festival vibe
+        for (let i = 0; i < 25; i++) {
+            let bgLight = document.createElement('div');
+            bgLight.className = 'bg-lantern';
+            bgLight.style.width = Math.random() * 8 + 6 + 'px';
+            bgLight.style.height = Math.random() * 12 + 10 + 'px';
+            bgLight.style.left = Math.random() * 100 + 'vw';
+            bgLight.style.animationDelay = Math.random() * 12 + 's';
+            bgLight.style.animationDuration = Math.random() * 6 + 10 + 's';
+            document.body.appendChild(bgLight);
+        }
+    </script>
+
+    <!-- The Tangled Wish Box -->
+    <div class="wish-box" id="wishBox">
+        <h1>Find Your Lantern</h1>
+        <p>"Now that I see you..."</p>
+        <textarea id="wishInput" placeholder="Write your dream here, Rapunzel..."></textarea>
+        <br>
+        <button onclick="launchLantern()">Release Into The Sky</button>
+    </div>
+
+    <script>
+        function launchLantern() {
+            const wishText = document.getElementById('wishInput').value;
+            
+            if (wishText.trim() === "") {
+                alert("Please write your dream down first!");
+                return;
+            }
+
+            // Hide the box smoothly
+            document.getElementById('wishBox').style.opacity = '0';
+            setTimeout(() => {
+                document.getElementById('wishBox').style.display = 'none';
+            }, 1500);
+
+            // Build the grand movie lantern
+            const lantern = document.createElement('div');
+            lantern.className = 'lantern';
+            lantern.style.left = 'calc(50% - 45px)';
+
+            // Add the Corona Kingdom Sun Graphic
+            const sun = document.createElement('div');
+            sun.className = 'corona-sun';
+            lantern.appendChild(sun);
+
+            // Add the personal text message
+            const textSpan = document.createElement('span');
+            textSpan.className = 'lantern-text';
+            textSpan.innerText = wishText;
+            lantern.appendChild(textSpan);
+
+            document.body.appendChild(lantern);
+
+            // Launch it slowly and gently into space
+            setTimeout(() => {
+                lantern.style.transform = 'translateY(-125vh) translateX(50px) scale(0.15)';
+                lantern.style.opacity = '0';
+            }, 200);
+
+            // Clean up and restart the dream cycle
+            setTimeout(() => {
+                lantern.remove();
+                const box = document.getElementById('wishBox');
+                document.getElementById('wishInput').value = "";
+                box.style.display = 'block';
+                setTimeout(() => box.style.opacity = '1', 100);
+            }, 9200);
+        }
+    </script>
+</body>
+</html>
