@@ -86,30 +86,51 @@
         }
 
         /* 3. The Tangled Paper Lantern Design */
-    .lantern {
-        position: absolute;
-        bottom: -160px;
-        width: 90px;
-        height: 130px;
+.lantern {
+    position: absolute;
+    bottom: -160px;
+    left: calc(50% - 45px);
+    width: 90px;
+    height: 130px;
     background: linear-gradient(to top, #ff5500, #ffaa44, #ffee99);
     border-radius: 12px 12px 6px 6px;
-    /* Intense flame glow */
-    box-shadow: 0 0 40px #ff9933, 0 0 80px #ff3300;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
     padding: 15px 10px;
     box-sizing: border-box;
-    /* Added flickering flame animation */
-    animation: flicker 0.2s infinite alternate;
-    transition: transform 8s cubic-bezier(0.3, 0.1, 0.3, 1), opacity 7.5s ease-in;
+    
+    /* 🚀 This links the lantern to the smooth flight/burn animation below */
+    animation: flyAndBurn 6s cubic-bezier(0.25, 1, 0.5, 1) forwards;
 }
 
-/* Creates a realistic hot air heat flicker */
-@keyframes flicker {
-    0% { box-shadow: 0 0 35px #ff9933, 0 0 70px #ff3300; transform: scale(1); }
-    100% { box-shadow: 0 0 45px #ffbb44, 0 0 90px #ff5500; transform: scale(1.02); }
+/* 🔥 THE FLIGHT & BURN KEYFRAMES */
+@keyframes flyAndBurn {
+    0% {
+        /* Start at the bottom, normal size, glowing warm orange */
+        transform: translateY(0) translateX(0) scale(1);
+        box-shadow: 0 0 40px #ffaa44, 0 0 80px #ff5500;
+        opacity: 1;
+    }
+    40% {
+        /* Gently floating up into the sky, drifting slightly right */
+        transform: translateY(-50vh) translateX(20px) scale(0.7);
+        opacity: 1;
+    }
+    75% {
+        /* 🔥 BURNING EFFECT: Turns intense fiery crimson, shrinks rapidly */
+        background: linear-gradient(to top, #ff1100, #ff5500, #ffaa44);
+        box-shadow: 0 0 70px #ff0000, 0 0 140px #ff3300;
+        transform: translateY(-90vh) translateX(40px) scale(0.3);
+        opacity: 0.8;
+    }
+    100% {
+        /* Disappears into the night sky like an ash particle */
+        transform: translateY(-125vh) translateX(50px) scale(0.0);
+        box-shadow: 0 0 0px transparent;
+        opacity: 0;
+    }
 }
 
 
@@ -153,11 +174,11 @@
 .bg-lantern {
     position: absolute;
     /* Soft glowing amber gradient */
-    background: radial-gradient(circle, #ffdf99, #ff9944, rgba(255,100,0,0));
+    background: radial-gradient(square, #ffdf99, #ff9944, rgba(255,100,0,0)); /*circle */
     border-radius: 50%;
     /* Blurs the edges to make them look like distant, large lights */
     filter: blur(1px);
-    box-shadow: 0 0 20px #ffaa44, 0 0 40px #ff5500;
+    box-shadow: 0 0 15px #ffaa44, 0 0 40px #ff5500; /*changed from 20px*/
     opacity: 0;
     bottom: -50px;
     animation: floatUp 14s linear infinite;
@@ -176,12 +197,12 @@
 
     <!-- Background Decoration Lights Creator -->
     <script>
-// Creates 20 larger background lights
-for (let i = 0; i < 30; i++) {
+// Creates 30 larger background lights
+for (let i = 0; i < 40; i++) {
     let bgLight = document.createElement('div');
     bgLight.className = 'bg-lantern';
     // Increased width and height sizes
-    let size = Math.random() * 25 + 20; 
+    let size = Math.random() * 15 + 10; //original 25 + 20
     bgLight.style.width = size + 'px';
     bgLight.style.height = (size * 1.3) + 'px';
     bgLight.style.left = Math.random() * 100 + 'vw';
@@ -194,69 +215,56 @@ for (let i = 0; i < 30; i++) {
 
     <!-- The Tangled Wish Box -->
     <div class="wish-box" id="wishBox">
-        <h1>Find Your Lantern</h1>
+        <h1>Make Your Wish Lantern</h1>
         <p>"Now that I see you..."</p>
-        <textarea id="wishInput" placeholder="Write your dream here, Rapunzel..."></textarea>
+        <textarea id="wishInput" placeholder="Write your wish here....."></textarea>
         <br>
         <button onclick="launchLantern()">Release Into The Sky</button>
     </div>
 
     <script>
-      function launchLantern() {
-        const wishText = document.getElementById('wishInput').value;
+function launchLantern() {
+    const wishText = document.getElementById('wishInput').value;
     
     if (wishText.trim() === "") {
-         alert("Please write your dream down first!");
+        alert("Please write your dream down first!");
         return;
     }
 
-    // Hide the text box smoothly
+    // Hide the text input box smoothly
     document.getElementById('wishBox').style.opacity = '0';
     setTimeout(() => {
         document.getElementById('wishBox').style.display = 'none';
-    }, 1500);
+    }, 1000);
 
-    // Build the lantern
+    // Build the lantern element
     const lantern = document.createElement('div');
     lantern.className = 'lantern';
-    lantern.style.left = 'calc(50% - 45px)';
 
-    // Add the Sun Logo
+    // Add the Corona Sun Logo
     const sun = document.createElement('div');
     sun.className = 'corona-sun';
     lantern.appendChild(sun);
 
-    // Add the wish text
+    // Add the user's written wish text
     const textSpan = document.createElement('span');
     textSpan.className = 'lantern-text';
     textSpan.innerText = wishText;
     lantern.appendChild(textSpan);
 
+    // Add it to the screen (The CSS animation starts automatically now!)
     document.body.appendChild(lantern);
 
-    // 🔥 THE NEW BURNING ANIMATION: 
-    // Step 1: Lantern lifts off into the air
-    setTimeout(() => {
-        lantern.style.transform = 'translateY(-60vh) translateX(30px) scale(0.6)';
-    }, 200);
-
-    // Step 2: Halfway up, it "burns up" by turning red-hot, shrinking, and vanishing
-    setTimeout(() => {
-        lantern.style.background = 'linear-gradient(to top, #ff1100, #ff5500, #ffaa44)';
-        lantern.style.boxShadow = '0 0 60px #ff3300, 0 0 120px #ff0000';
-        lantern.style.transform = 'translateY(-125vh) translateX(60px) scale(0.0)';
-        lantern.style.opacity = '0';
-    }, 4000); // Happens 4 seconds after launch
-
-    // Clean up and reset the typing box
+    // Clean up and bring back the input menu after the animation finishes
     setTimeout(() => {
         lantern.remove();
         const box = document.getElementById('wishBox');
         document.getElementById('wishInput').value = "";
         box.style.display = 'block';
         setTimeout(() => box.style.opacity = '1', 100);
-    }, 9500);
+    }, 6500); // Resets slightly after the 6-second animation ends
 }
+
 
     </script>
 </body>
