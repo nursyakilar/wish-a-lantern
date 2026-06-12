@@ -249,46 +249,141 @@ function launchLantern() {
         return;
     }
 
-    // Hide the input box smoothly
+    // 1. Fade out the text input box smoothly over 1 second
     document.getElementById('wishBox').style.opacity = '0';
     setTimeout(() => {
         document.getElementById('wishBox').style.display = 'none';
     }, 1000);
 
-    // Build the lantern element
-    const lantern = document.createElement('div');
-    lantern.className = 'lantern';
-
-    // Add the Corona Sun Logo
-    const sun = document.createElement('div');
-    sun.className = 'corona-sun';
-    lantern.appendChild(sun);
-
-    // Add the user's paragraph or wish text
-    const textSpan = document.createElement('span');
-    textSpan.className = 'lantern-text';
-    textSpan.innerText = wishText;
-    lantern.appendChild(textSpan);
-
-    // ⏱️ THE DELAY TRICK: We style the animation to stay paused at first
-    lantern.style.animationPlayState = 'paused';
-    document.body.appendChild(lantern);
-
-    // Wait 3 seconds in the center before unpausing the flight and burn animation
+    // 2. ⏱️ WAIT 2 SECONDS BEFORE CREATING THE LANTERN
     setTimeout(() => {
-        lantern.style.animationPlayState = 'running';
-    }, 5000); //3000
+        
+        // Build the lantern element
+        const lantern = document.createElement('div');
+        lantern.className = 'lantern';
+        
+        /* Give it a quick smooth fade-in look when it first appears */
+        lantern.style.opacity = '0';
+        lantern.style.transition = 'opacity 1s ease';
 
-    // Clean up and reset everything after the combined delay + animation time
-    setTimeout(() => {
-        lantern.remove();
-        const box = document.getElementById('wishBox');
-        document.getElementById('wishInput').value = "";
-        box.style.display = 'block';
-        setTimeout(() => box.style.opacity = '1', 100);
-    }, 12500); 
+        // Add the Corona Sun Logo
+        const sun = document.createElement('div');
+        sun.className = 'corona-sun';
+        lantern.appendChild(sun);
+
+        // Add the user's paragraph or wish text
+        const textSpan = document.createElement('span');
+        textSpan.className = 'lantern-text';
+        textSpan.innerText = wishText;
+        lantern.appendChild(textSpan);
+
+        // Keep the flight animation paused while it sits in the center
+        lantern.style.animationPlayState = 'paused';
+        document.body.appendChild(lantern);
+
+        // Fade the lantern into view over 1 second
+        setTimeout(() => {
+            lantern.style.opacity = '1';
+        }, 50);
+
+        // 3. Wait another 3 seconds for the user to read it, then let it fly and burn
+        setTimeout(() => {
+            // Remove the transition property so it doesn't conflict with the flight
+            lantern.style.transition = 'none'; 
+            lantern.style.animationPlayState = 'running';
+        }, 3000); 
+
+        // 4. Clean up and reset everything after the animation finishes
+        setTimeout(() => {
+            lantern.remove();
+            const box = document.getElementById('wishBox');
+            document.getElementById('wishInput').value = "";
+            box.style.display = 'block';
+            setTimeout(() => box.style.opacity = '1', 100);
+        }, 12500); 
+
+    }, 2000); // 2000 milliseconds = 2 full seconds of empty sky delay
+
+            // 3. Wait another 3 seconds for the user to read it, then let it fly and burn
+        setTimeout(() => {
+            lantern.style.transition = 'none'; 
+            lantern.style.animationPlayState = 'running';
+            
+            // 🔊 PLAY THE BURNING SOUND EFFECT RIGHT HERE
+            playBurningSound();
+            
+        }, 3000); 
 }
 
+        function playBurningSound() {
+    // Check if the browser supports audio
+    const AudioContext = window.AudioContext || window.webkitAudioContext;
+    if (!AudioContext) return;
+    
+    const audioCtx = new AudioContext();
+
+    // 1. Create a low rumble for the flame heat
+    const rumbleOsc = audioCtx.createOscillator();
+    const rumbleGain = audioCtx.createGain();
+    rumbleOsc.type = 'triangle';
+    rumbleOsc.frequency.setValueAtTime(45, audioCtx.currentTime); // Low bass frequency
+    
+    // Modulate the rumble so it moves like a flickering fire
+    const rumbleMod = audioCtx.createOscillator();
+    const rumbleModGain = audioCtx.createGain();
+    rumbleMod.frequency.setValueAtTime(8, audioCtx.currentTime);
+    rumbleModGain.gain.setValueAtTime(15, audioCtx.currentTime);
+    
+    rumbleMod.connect(rumbleModGain);
+    rumbleModGain.connect(rumbleOsc.frequency);
+    
+    rumbleGain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+    // Smoothly fade out the sound over 3 seconds
+    rumbleGain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 3);
+    
+    rumbleOsc.connect(rumbleGain);
+    rumbleGain.connect(audioCtx.destination);
+    
+    rumbleOsc.start();
+    rumbleMod.start();
+
+    // 2. Generate sharp, random crackling pops for burning paper
+    const bufferSize = audioCtx.sampleRate * 3; // 3 seconds of sound
+    const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+    const data = buffer.getChannelData(0);
+    
+    for (let i = 0; i < bufferSize; i++) {
+        // Create sharp audio spikes at random intervals
+        if (Math.random() > 0.9993) {
+            data[i] = Math.random() * 2 - 1;
+            // Add a little trailing echo to each pop
+            if (i < bufferSize - 1) data[i+1] = data[i] * 0.5;
+            if (i < bufferSize - 2) data[i+2] = data[i] * 0.25;
+        } else {
+            data[i] = 0;
+        }
+    }
+
+    const crackleNode = audioCtx.createBufferSource();
+    crackleNode.buffer = buffer;
+    
+    const crackleGain = audioCtx.createGain();
+    crackleGain.gain.setValueAtTime(0.4, audioCtx.currentTime);
+    crackleGain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 3);
+    
+    crackleNode.connect(crackleGain);
+    crackleGain.connect(audioCtx.destination);
+    
+    crackleNode.start();
+
+    // Clean up and turn off the audio nodes after 3 seconds
+    setTimeout(() => {
+        rumbleOsc.stop();
+        rumbleMod.stop();
+        crackleNode.stop();
+        audioCtx.close();
+    }, 3500);
+}
 
     </script>
 </body>
